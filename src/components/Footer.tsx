@@ -1,11 +1,15 @@
 import React from 'react';
 import { Sparkles, Phone, Mail, MapPin, Instagram, Facebook, Twitter, Heart } from 'lucide-react';
+import { useUserAuth } from '../context/UserAuthContext';
 
 interface FooterProps {
   setActiveTab: (tab: string) => void;
+  hasBookings?: boolean;
 }
 
-export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
+export const Footer: React.FC<FooterProps> = ({ setActiveTab, hasBookings }) => {
+  const { isAuthenticated } = useUserAuth();
+
   return (
     <footer className="bg-stone-900 text-stone-300 pt-16 pb-12 border-t border-party-purple-900/30 relative overflow-hidden transition-colors duration-300">
       {/* Subtle warm glow line */}
@@ -75,11 +79,13 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
                   Book Your Party
                 </button>
               </li>
-              <li>
-                <button onClick={() => setActiveTab('my-bookings')} className="hover:text-party-pink-400 transition">
-                  My Bookings
-                </button>
-              </li>
+              {isAuthenticated && hasBookings && (
+                <li>
+                  <button onClick={() => setActiveTab('my-bookings')} className="hover:text-party-pink-400 transition">
+                    My Bookings
+                  </button>
+                </li>
+              )}
               <li>
                 <button onClick={() => setActiveTab('contact')} className="hover:text-party-pink-400 transition">
                   Contact Us
@@ -142,10 +148,16 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
         </div>
 
         {/* Bottom copyright line */}
-        <div className="pt-8 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
+        <div className="pt-8 border-t border-stone-800 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-stone-500">
           <p>© 2026 BdayBuzz. All rights reserved. "Make Every Birthday Unforgettable"</p>
+          
+          <div className="flex items-center gap-4 sm:gap-6">
+            <button onClick={() => { setActiveTab('privacy'); window.scrollTo(0,0); }} className="hover:text-party-pink-400 transition-colors">Privacy Policy</button>
+            <button onClick={() => { setActiveTab('terms'); window.scrollTo(0,0); }} className="hover:text-party-pink-400 transition-colors">Terms & Conditions</button>
+          </div>
+
           <div className="flex items-center gap-4">
-            <p className="flex items-center gap-1">
+            <p className="flex items-center gap-1 hidden sm:flex">
               Crafted with <Heart className="w-3.5 h-3.5 text-party-pink-500 fill-party-pink-500" /> for perfect celebrations
             </p>
             <a

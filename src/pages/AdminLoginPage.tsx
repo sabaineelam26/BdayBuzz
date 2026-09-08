@@ -4,9 +4,10 @@ import { ShieldCheck, Eye, EyeOff, Sparkles, AlertCircle, Lock, User } from 'luc
 import { useAdminAuth } from '../context/AdminAuthContext';
 
 export const AdminLoginPage: React.FC = () => {
-  const { login, isAuthenticated } = useAdminAuth();
+  const { login, signup, isAuthenticated } = useAdminAuth();
   const navigate = useNavigate();
 
+  const [isSignUp, setIsSignUp] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -25,16 +26,27 @@ export const AdminLoginPage: React.FC = () => {
     setLoading(true);
 
     setTimeout(() => {
-      const ok = login(username.trim(), password);
+      let ok = false;
+      if (isSignUp) {
+        ok = signup(username.trim(), password);
+      } else {
+        ok = login(username.trim(), password);
+      }
       setLoading(false);
+      
       if (ok) {
         navigate('/admin/dashboard', { replace: true });
       } else {
-        setError('Invalid username or password. Please try again.');
+        setError(isSignUp ? 'Username already taken or invalid.' : 'Invalid username or password. Please try again.');
         setShake(true);
         setTimeout(() => setShake(false), 600);
       }
     }, 800);
+  };
+
+  const toggleMode = () => {
+    setIsSignUp(!isSignUp);
+    setError('');
   };
 
   return (
@@ -60,7 +72,9 @@ export const AdminLoginPage: React.FC = () => {
                 Admin Portal
                 <Sparkles className="w-4 h-4 text-party-gold-400 animate-pulse" />
               </h1>
-              <p className="text-stone-400 text-sm mt-1">BdayBuzz — Business Dashboard</p>
+              <p className="text-stone-400 text-sm mt-1">
+                {isSignUp ? 'Create a new admin account' : 'BdayBuzz — Business Dashboard'}
+              </p>
             </div>
           </div>
 
@@ -104,7 +118,7 @@ export const AdminLoginPage: React.FC = () => {
                 <input
                   id="admin-password"
                   type={showPassword ? 'text' : 'password'}
-                  autoComplete="current-password"
+                  autoComplete={isSignUp ? 'new-password' : 'current-password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -136,22 +150,34 @@ export const AdminLoginPage: React.FC = () => {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                   </svg>
-                  Authenticating...
+                  {isSignUp ? 'Creating Account...' : 'Authenticating...'}
                 </>
               ) : (
                 <>
                   <ShieldCheck className="w-4 h-4" />
-                  Sign In to Admin
+                  {isSignUp ? 'Sign Up as Admin' : 'Sign In to Admin'}
                 </>
               )}
             </button>
           </form>
 
+          {/* Toggle Mode */}
+          <div className="text-center text-sm text-stone-500">
+            {isSignUp ? 'Already have an admin account?' : "Need an admin account?"}{' '}
+            <button
+              type="button"
+              onClick={toggleMode}
+              className="font-bold text-party-pink-500 hover:text-party-pink-400 hover:underline transition"
+            >
+              {isSignUp ? 'Sign In' : 'Sign Up'}
+            </button>
+          </div>
+
           {/* Back to site */}
-          <div className="text-center pt-1">
+          <div className="text-center pt-1 border-t border-white/5 mt-4">
             <a
               href="/"
-              className="text-xs text-stone-500 hover:text-party-purple-400 transition"
+              className="inline-block mt-4 text-xs text-stone-500 hover:text-party-purple-400 transition"
             >
               ← Back to BdayBuzz website
             </a>

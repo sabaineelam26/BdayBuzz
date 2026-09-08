@@ -3,12 +3,13 @@ import {
   PartyPopper, Sparkles, Calendar, Gift, ArrowRight, Star, 
   CheckCircle2, Heart, Award, ShieldCheck, Clock
 } from 'lucide-react';
-import { Package, Category } from '../types';
+import { Package, Category, Theme } from '../types';
 import { PackageCard } from '../components/PackageCard';
 
 interface HomePageProps {
   categories: Category[];
   popularPackages: Package[];
+  themes: Theme[];
   onNavigate: (tab: string, categoryFilter?: string) => void;
   onViewPackageDetails: (pkg: Package) => void;
   onBookPackage: (pkg: Package) => void;
@@ -17,6 +18,7 @@ interface HomePageProps {
 export const HomePage: React.FC<HomePageProps> = ({
   categories,
   popularPackages,
+  themes,
   onNavigate,
   onViewPackageDetails,
   onBookPackage,
@@ -25,10 +27,10 @@ export const HomePage: React.FC<HomePageProps> = ({
     <div className="space-y-20 pb-16">
       
       {/* HERO SECTION */}
-      <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28 bg-gradient-to-b from-party-purple-50/60 via-party-gold-50/30 to-stone-50 dark:from-stone-900/60 dark:via-party-purple-950/20 dark:to-[#110B04] transition-colors duration-300">
+      <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28 bg-gradient-to-b from-party-orange-50/60 via-party-gold-50/30 to-stone-50 dark:from-stone-900/60 dark:via-party-orange-950/20 dark:to-[#110B04] transition-colors duration-300">
         
         {/* Ambient Glow Orbs — warm & subtle */}
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-gradient-to-tr from-party-purple-400/15 to-party-pink-400/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-gradient-to-tr from-party-orange-400/15 to-party-coral-400/15 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute top-1/2 -right-24 w-80 h-80 bg-party-gold-400/12 rounded-full blur-3xl pointer-events-none"></div>
 
         {/* Floating Background Visual Elements (Balloons, Sparks) */}
@@ -42,8 +44,8 @@ export const HomePage: React.FC<HomePageProps> = ({
             
             {/* Left Hero Content */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-party-purple-100/90 dark:bg-party-purple-950/80 border border-party-purple-200 dark:border-party-purple-800 text-party-purple-700 dark:text-party-purple-300 text-xs sm:text-sm font-bold shadow-xs backdrop-blur-md">
-                <Sparkles className="w-4 h-4 text-party-pink-500 fill-party-pink-400 animate-pulse" />
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-party-orange-100/90 dark:bg-party-orange-950/80 border border-party-orange-200 dark:border-party-orange-800 text-party-orange-700 dark:text-party-orange-300 text-xs sm:text-sm font-bold shadow-xs backdrop-blur-md">
+                <Sparkles className="w-4 h-4 text-party-coral-500 fill-party-coral-400 animate-pulse" />
                 The #1 Rated Birthday Booking Platform
               </div>
 
@@ -62,7 +64,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <button
                   onClick={() => onNavigate('packages')}
-                  className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-party-purple-600 via-party-pink-500 to-party-purple-700 hover:from-party-purple-700 hover:to-party-pink-600 text-white font-extrabold text-base shadow-lg shadow-party-purple-400/30 dark:shadow-party-purple-950 hover:shadow-glow hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 group"
+                  className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-party-orange-600 via-party-coral-500 to-party-orange-700 hover:from-party-orange-700 hover:to-party-coral-600 text-white font-extrabold text-base shadow-lg shadow-party-orange-400/30 dark:shadow-party-orange-950 hover:shadow-glow hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 group"
                 >
                   <span>Explore Packages</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
@@ -70,26 +72,47 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                 <button
                   onClick={() => onNavigate('booking')}
-                  className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white dark:bg-stone-900/90 hover:bg-party-purple-50 dark:hover:bg-stone-800 text-stone-800 dark:text-stone-100 hover:text-party-purple-700 dark:hover:text-party-pink-400 font-extrabold text-base shadow-md dark:shadow-card-dark border border-stone-200/80 dark:border-white/10 hover:border-party-purple-300 dark:hover:border-party-purple-500/50 transition-all flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white dark:bg-stone-900/90 hover:bg-party-orange-50 dark:hover:bg-stone-800 text-stone-800 dark:text-stone-100 hover:text-party-orange-700 dark:hover:text-party-coral-400 font-extrabold text-base shadow-md dark:shadow-card-dark border border-stone-200/80 dark:border-white/10 hover:border-party-orange-300 dark:hover:border-party-orange-500/50 transition-all flex items-center justify-center gap-2"
                 >
-                  <PartyPopper className="w-5 h-5 text-party-pink-500" />
+                  <PartyPopper className="w-5 h-5 text-party-coral-500" />
                   <span>Book Your Party</span>
                 </button>
               </div>
 
               {/* Social Proof metrics */}
-              <div className="pt-6 border-t border-stone-200/60 dark:border-white/10 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0 text-center sm:text-left">
-                <div className="p-2 rounded-2xl bg-white/40 dark:bg-stone-900/40 backdrop-blur-xs border border-transparent dark:border-white/5">
-                  <p className="text-2xl font-black text-stone-900 dark:text-white">500+</p>
-                  <p className="text-xs text-stone-500 dark:text-stone-400 font-medium">Happy Parties</p>
+              <div className="mt-10 pt-6 border-t border-stone-200/60 dark:border-white/10 flex flex-wrap items-center justify-center lg:justify-start gap-6 sm:gap-8">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-party-coral-100 dark:bg-party-coral-950/40 flex items-center justify-center">
+                    <Heart className="w-5 h-5 text-party-coral-600 dark:text-party-coral-400" />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-xl font-black text-stone-900 dark:text-white leading-none">500+</p>
+                    <p className="text-xs text-stone-500 dark:text-stone-400 font-medium mt-1">Happy Parties</p>
+                  </div>
                 </div>
-                <div className="p-2 rounded-2xl bg-white/40 dark:bg-stone-900/40 backdrop-blur-xs border border-transparent dark:border-white/5">
-                  <p className="text-2xl font-black text-stone-900 dark:text-white">4.9 ★</p>
-                  <p className="text-xs text-stone-500 dark:text-stone-400 font-medium">Customer Rating</p>
+                
+                <div className="hidden sm:block w-px h-10 bg-stone-200 dark:bg-white/10"></div>
+                
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-party-gold-100 dark:bg-party-gold-950/40 flex items-center justify-center">
+                    <Star className="w-5 h-5 text-party-gold-600 dark:text-party-gold-400 fill-party-gold-600 dark:fill-party-gold-400" />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-xl font-black text-stone-900 dark:text-white leading-none">4.9</p>
+                    <p className="text-xs text-stone-500 dark:text-stone-400 font-medium mt-1">Customer Rating</p>
+                  </div>
                 </div>
-                <div className="p-2 rounded-2xl bg-white/40 dark:bg-stone-900/40 backdrop-blur-xs border border-transparent dark:border-white/5">
-                  <p className="text-2xl font-black text-stone-900 dark:text-white">100%</p>
-                  <p className="text-xs text-stone-500 dark:text-stone-400 font-medium">Satisfaction</p>
+                
+                <div className="hidden sm:block w-px h-10 bg-stone-200 dark:bg-white/10"></div>
+                
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-party-orange-100 dark:bg-party-orange-950/40 flex items-center justify-center">
+                    <ShieldCheck className="w-5 h-5 text-party-orange-600 dark:text-party-orange-400" />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-xl font-black text-stone-900 dark:text-white leading-none">100%</p>
+                    <p className="text-xs text-stone-500 dark:text-stone-400 font-medium mt-1">Satisfaction</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -99,7 +122,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               <div className="relative mx-auto max-w-md lg:max-w-none">
                 
                 {/* Glow backdrop — soft warm */}
-                <div className="absolute -inset-4 bg-gradient-to-r from-party-purple-300 to-party-pink-300 dark:from-party-purple-800 dark:to-party-pink-800 rounded-3xl blur-2xl opacity-20 animate-pulse-subtle"></div>
+                <div className="absolute -inset-4 bg-gradient-to-r from-party-orange-300 to-party-coral-300 dark:from-party-orange-800 dark:to-party-coral-800 rounded-3xl blur-2xl opacity-20 animate-pulse-subtle"></div>
                 
                 {/* Main Hero Card */}
                 <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white dark:border-stone-800 bg-white dark:bg-stone-900 group">
@@ -121,7 +144,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                 {/* Floating Overlay Badge */}
                 <div className="absolute -bottom-6 -left-6 bg-white dark:bg-stone-900/95 rounded-2xl p-4 shadow-xl dark:shadow-card-dark border border-stone-100 dark:border-white/10 hidden sm:flex items-center gap-3 animate-float backdrop-blur-md" style={{ animationDelay: '0.5s' }}>
-                  <div className="w-12 h-12 rounded-xl bg-party-pink-100 dark:bg-party-pink-950/60 text-party-pink-600 dark:text-party-pink-400 flex items-center justify-center font-extrabold text-xl shadow-xs">
+                  <div className="w-12 h-12 rounded-xl bg-party-coral-100 dark:bg-party-coral-950/60 text-party-coral-600 dark:text-party-coral-400 flex items-center justify-center font-extrabold text-xl shadow-xs">
                     🎈
                   </div>
                   <div>
@@ -137,10 +160,133 @@ export const HomePage: React.FC<HomePageProps> = ({
         </div>
       </section>
 
+      {/* EVERYTHING YOU NEED SECTION */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+          <h2 className="text-3xl sm:text-4xl font-black text-stone-900 dark:text-white tracking-tight">
+            Everything You Need for the Perfect Birthday
+          </h2>
+          <p className="text-stone-600 dark:text-stone-300 text-base">
+            From choosing a theme to booking the perfect package, BdayBuzz makes every step simple.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          {/* Card 1 */}
+          <div className="bg-white dark:bg-stone-900 rounded-3xl p-6 shadow-sm shadow-stone-200/50 dark:shadow-none border border-stone-100 dark:border-white/5 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+            <div className="w-12 h-12 rounded-2xl bg-party-orange-100 dark:bg-party-orange-950/60 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+              <Gift className="w-6 h-6 text-party-orange-600 dark:text-party-orange-400" />
+            </div>
+            <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-2">Birthday Themes</h3>
+            <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
+              Beautiful themes for every age and personality.
+            </p>
+          </div>
+
+          {/* Card 2 */}
+          <div className="bg-white dark:bg-stone-900 rounded-3xl p-6 shadow-sm shadow-stone-200/50 dark:shadow-none border border-stone-100 dark:border-white/5 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+            <div className="w-12 h-12 rounded-2xl bg-party-coral-100 dark:bg-party-coral-950/60 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+              <PartyPopper className="w-6 h-6 text-party-coral-600 dark:text-party-coral-400" />
+            </div>
+            <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-2">Party Packages</h3>
+            <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
+              Ready-to-book packages designed for stress-free celebrations.
+            </p>
+          </div>
+
+          {/* Card 3 */}
+          <div className="bg-white dark:bg-stone-900 rounded-3xl p-6 shadow-sm shadow-stone-200/50 dark:shadow-none border border-stone-100 dark:border-white/5 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+            <div className="w-12 h-12 rounded-2xl bg-party-gold-100 dark:bg-party-gold-950/60 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+              <Calendar className="w-6 h-6 text-party-gold-600 dark:text-party-gold-400" />
+            </div>
+            <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-2">Easy Booking</h3>
+            <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
+              Find your perfect party and book in just a few clicks.
+            </p>
+          </div>
+
+          {/* Card 4 */}
+          <div className="bg-white dark:bg-stone-900 rounded-3xl p-6 shadow-sm shadow-stone-200/50 dark:shadow-none border border-stone-100 dark:border-white/5 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+              <Sparkles className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-2">Custom Celebrations</h3>
+            <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
+              Add your own personal touch to make the day truly special.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* POPULAR PACKAGES SECTION */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+          <span className="text-xs font-extrabold text-party-orange-600 dark:text-party-orange-400 uppercase tracking-wider bg-party-orange-100 dark:bg-party-orange-950/60 px-3.5 py-1.5 rounded-full border border-party-orange-200 dark:border-party-orange-800">
+            Top Choices
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-black text-stone-900 dark:text-white tracking-tight">
+            Popular Birthday Packages
+          </h2>
+          <p className="text-stone-600 dark:text-stone-300 text-base">
+            Everything you need for a celebration worth remembering.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {popularPackages.slice(0, 3).map(pkg => (
+            <PackageCard 
+              key={pkg.id} 
+              pkg={pkg} 
+              onViewDetails={() => onViewPackageDetails(pkg)} 
+              onBook={() => onBookPackage(pkg)} 
+            />
+          ))}
+        </div>
+        
+        <div className="mt-10 text-center">
+          <button 
+            onClick={() => onNavigate('packages')}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-stone-100 dark:bg-stone-900 text-stone-900 dark:text-white font-bold hover:bg-party-orange-50 dark:hover:bg-stone-800 transition-colors"
+          >
+            View All Packages <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      </section>
+
+      {/* THEMES SECTION */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+          <span className="text-xs font-extrabold text-party-coral-600 dark:text-party-coral-400 uppercase tracking-wider bg-party-coral-100 dark:bg-party-coral-950/60 px-3.5 py-1.5 rounded-full border border-party-coral-200 dark:border-party-coral-800">
+            Endless Possibilities
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-black text-stone-900 dark:text-white tracking-tight">
+            Trending Themes
+          </h2>
+          <p className="text-stone-600 dark:text-stone-300 text-base">
+            Choose from Princess, Superhero, Safari, and dozens more magical worlds.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {themes.slice(0, 6).map(theme => (
+            <div 
+              key={theme.id}
+              onClick={() => onNavigate('themes')}
+              className="group cursor-pointer rounded-2xl overflow-hidden relative aspect-square shadow-sm hover:shadow-md transition-all"
+            >
+              <img src={theme.image} alt={theme.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-transparent to-transparent flex items-end p-3">
+                <span className="text-white font-bold text-sm leading-tight drop-shadow-md">{theme.name}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* A. FEATURED CATEGORIES */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <span className="text-xs font-extrabold text-party-purple-600 dark:text-party-purple-400 uppercase tracking-wider bg-party-purple-100 dark:bg-party-purple-950/60 px-3.5 py-1.5 rounded-full border border-party-purple-200 dark:border-party-purple-800">
+          <span className="text-xs font-extrabold text-party-orange-600 dark:text-party-orange-400 uppercase tracking-wider bg-party-orange-100 dark:bg-party-orange-950/60 px-3.5 py-1.5 rounded-full border border-party-orange-200 dark:border-party-orange-800">
             Tailored Experiences
           </span>
           <h2 className="text-3xl sm:text-4xl font-black text-stone-900 dark:text-white tracking-tight">
@@ -172,7 +318,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
 
               <div className="relative p-6 text-white space-y-2">
-                <h3 className="text-xl font-extrabold leading-tight group-hover:text-party-pink-300 transition-colors">
+                <h3 className="text-xl font-extrabold leading-tight group-hover:text-party-coral-300 transition-colors">
                   {cat.name}
                 </h3>
                 <p className="text-stone-300 text-xs line-clamp-2 leading-relaxed">
@@ -193,7 +339,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
             <div className="space-y-3">
-              <span className="text-xs font-extrabold text-party-pink-600 dark:text-party-pink-400 uppercase tracking-wider bg-party-pink-100 dark:bg-party-pink-950/60 px-3.5 py-1.5 rounded-full border border-party-pink-200 dark:border-party-pink-800">
+              <span className="text-xs font-extrabold text-party-coral-600 dark:text-party-coral-400 uppercase tracking-wider bg-party-coral-100 dark:bg-party-coral-950/60 px-3.5 py-1.5 rounded-full border border-party-coral-200 dark:border-party-coral-800">
                 Best Value
               </span>
               <h2 className="text-3xl sm:text-4xl font-black text-stone-900 dark:text-white tracking-tight">
@@ -206,7 +352,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
             <button
               onClick={() => onNavigate('packages')}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white dark:bg-stone-800 hover:bg-party-purple-50 dark:hover:bg-stone-700 text-party-purple-700 dark:text-party-purple-300 font-bold text-sm border border-party-purple-200 dark:border-party-purple-800/50 shadow-sm transition-all self-start md:self-auto hover:shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white dark:bg-stone-800 hover:bg-party-orange-50 dark:hover:bg-stone-700 text-party-orange-700 dark:text-party-orange-300 font-bold text-sm border border-party-orange-200 dark:border-party-orange-800/50 shadow-sm transition-all self-start md:self-auto hover:shadow-md"
             >
               View All Packages
               <ArrowRight className="w-4 h-4" />
@@ -230,7 +376,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       {/* C. HOW IT WORKS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
-          <span className="text-xs font-extrabold text-party-purple-600 dark:text-party-purple-400 uppercase tracking-wider bg-party-purple-100 dark:bg-party-purple-950/60 px-3.5 py-1.5 rounded-full border border-party-purple-200 dark:border-party-purple-800">
+          <span className="text-xs font-extrabold text-party-orange-600 dark:text-party-orange-400 uppercase tracking-wider bg-party-orange-100 dark:bg-party-orange-950/60 px-3.5 py-1.5 rounded-full border border-party-orange-200 dark:border-party-orange-800">
             Simple Booking Flow
           </span>
           <h2 className="text-3xl sm:text-4xl font-black text-stone-900 dark:text-white tracking-tight">
@@ -245,7 +391,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           
           {/* Step 1 */}
           <div className="relative bg-white dark:bg-stone-900/90 rounded-3xl p-6 border border-stone-100 dark:border-white/10 shadow-card dark:shadow-card-dark hover:shadow-card-hover transition-all text-center space-y-4 hover:-translate-y-1">
-            <div className="w-16 h-16 rounded-2xl bg-party-purple-100 dark:bg-party-purple-950/80 text-party-purple-600 dark:text-party-purple-300 font-black text-2xl mx-auto flex items-center justify-center shadow-inner border border-party-purple-200/50 dark:border-party-purple-800">
+            <div className="w-16 h-16 rounded-2xl bg-party-orange-100 dark:bg-party-orange-950/80 text-party-orange-600 dark:text-party-orange-300 font-black text-2xl mx-auto flex items-center justify-center shadow-inner border border-party-orange-200/50 dark:border-party-orange-800">
               1
             </div>
             <h3 className="text-lg font-black text-stone-900 dark:text-white">1. Choose a Package</h3>
@@ -256,7 +402,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
           {/* Step 2 */}
           <div className="relative bg-white dark:bg-stone-900/90 rounded-3xl p-6 border border-stone-100 dark:border-white/10 shadow-card dark:shadow-card-dark hover:shadow-card-hover transition-all text-center space-y-4 hover:-translate-y-1">
-            <div className="w-16 h-16 rounded-2xl bg-party-pink-100 dark:bg-party-pink-950/80 text-party-pink-600 dark:text-party-pink-300 font-black text-2xl mx-auto flex items-center justify-center shadow-inner border border-party-pink-200/50 dark:border-party-pink-800">
+            <div className="w-16 h-16 rounded-2xl bg-party-coral-100 dark:bg-party-coral-950/80 text-party-coral-600 dark:text-party-coral-300 font-black text-2xl mx-auto flex items-center justify-center shadow-inner border border-party-coral-200/50 dark:border-party-coral-800">
               2
             </div>
             <h3 className="text-lg font-black text-stone-900 dark:text-white">2. Pick a Theme</h3>
@@ -292,7 +438,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
       {/* D. CALL TO ACTION BANNER */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-party-purple-700 via-party-purple-600 to-party-pink-600 dark:from-party-purple-900 dark:via-stone-900 dark:to-party-purple-950 p-8 sm:p-12 lg:p-16 text-white shadow-2xl text-center sm:text-left flex flex-col lg:flex-row items-center justify-between gap-8 border border-white/10">
+        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-party-orange-700 via-party-orange-600 to-party-coral-600 dark:from-party-orange-900 dark:via-stone-900 dark:to-party-orange-950 p-8 sm:p-12 lg:p-16 text-white shadow-2xl text-center sm:text-left flex flex-col lg:flex-row items-center justify-between gap-8 border border-white/10">
           
           {/* Subtle background graphics */}
           <div className="absolute -top-10 -right-10 text-9xl opacity-10 select-none pointer-events-none">🎈</div>
@@ -305,7 +451,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
               Ready to Plan Your Perfect Birthday?
             </h2>
-            <p className="text-party-purple-100 dark:text-stone-200 text-base sm:text-lg">
+            <p className="text-party-orange-100 dark:text-stone-200 text-base sm:text-lg">
               Let us take care of decorations, setup, entertainment, and cake. Focus on making unforgettable memories!
             </p>
           </div>
@@ -313,9 +459,9 @@ export const HomePage: React.FC<HomePageProps> = ({
           <div className="relative z-10 shrink-0">
             <button
               onClick={() => onNavigate('booking')}
-              className="px-8 py-4 rounded-2xl bg-white hover:bg-party-gold-400 text-party-purple-900 hover:text-stone-950 font-black text-lg shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-3 group"
+              className="px-8 py-4 rounded-2xl bg-white hover:bg-party-gold-400 text-party-orange-900 hover:text-stone-950 font-black text-lg shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-3 group"
             >
-              <PartyPopper className="w-6 h-6 text-party-pink-600 group-hover:rotate-12 transition-transform" />
+              <PartyPopper className="w-6 h-6 text-party-coral-600 group-hover:rotate-12 transition-transform" />
               <span>Book Your Party</span>
             </button>
           </div>

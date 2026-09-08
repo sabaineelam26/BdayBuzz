@@ -10,9 +10,13 @@ import { MyBookingsPage } from './pages/MyBookingsPage';
 import { AdminPage } from './pages/AdminPage';
 import { AdminLoginPage } from './pages/AdminLoginPage';
 import { ContactPage } from './pages/ContactPage';
+import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
+import { TermsPage } from './pages/TermsPage';
 import { PackageDetailModal } from './components/PackageDetailModal';
 import { ConfettiModal } from './components/ConfettiModal';
 import { AdminRoute } from './components/AdminRoute';
+import { UserLoginModal } from './components/UserLoginModal';
+import { useUserAuth } from './context/UserAuthContext';
 
 import { storageService } from './services/storage';
 import { INITIAL_CATEGORIES } from './data/initialData';
@@ -50,6 +54,13 @@ export function App() {
   // Modals & Selection state
   const [detailModalPackage, setDetailModalPackage] = useState<Package | null>(null);
   const [submittedBooking, setSubmittedBooking] = useState<Booking | null>(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const { isAuthenticated, userEmail } = useUserAuth();
+  
+  const userBookings = isAuthenticated && userEmail 
+    ? bookings.filter(b => b.email.toLowerCase() === userEmail.toLowerCase())
+    : [];
+  const hasBookings = userBookings.length > 0;
   
   const [preSelectedPackageId, setPreSelectedPackageId] = useState<string | undefined>(undefined);
   const [preSelectedThemeId, setPreSelectedThemeId] = useState<string | undefined>(undefined);
@@ -86,7 +97,11 @@ export function App() {
   };
 
   const handleCreateBooking = (bookingInput: any) => {
-    const newBooking = storageService.createBooking(bookingInput);
+    const finalInput = {
+      ...bookingInput,
+      email: isAuthenticated && userEmail ? userEmail : bookingInput.email
+    };
+    const newBooking = storageService.createBooking(finalInput);
     setBookings(storageService.getBookings());
     setSubmittedBooking(newBooking);
   };
@@ -143,10 +158,10 @@ export function App() {
       <Route
         path="*"
         element={
-    <div className="min-h-screen flex flex-col bg-[#FDFAF7] dark:bg-[#110B04] text-stone-800 dark:text-stone-100 selection:bg-party-purple-500 selection:text-white transition-colors duration-300 relative">
+    <div className="min-h-screen flex flex-col bg-[#FDFAF7] dark:bg-[#110B04] text-stone-800 dark:text-stone-100 selection:bg-party-orange-500 selection:text-white transition-colors duration-300 relative">
       
       {/* Top Announcement Bar */}
-      <div className="bg-gradient-to-r from-party-purple-700 via-party-pink-600 to-party-purple-700 dark:from-party-purple-950 dark:via-party-purple-900 dark:to-party-purple-950 text-white py-2 px-4 text-center text-xs font-bold flex items-center justify-center gap-2 shadow-xs border-b border-white/10">
+      <div className="bg-gradient-to-r from-party-orange-700 via-party-coral-600 to-party-orange-700 dark:from-party-orange-950 dark:via-party-orange-900 dark:to-party-orange-950 text-white py-2 px-4 text-center text-xs font-bold flex items-center justify-center gap-2 shadow-xs border-b border-white/10">
         <Sparkles className="w-3.5 h-3.5 text-party-gold-200 animate-pulse shrink-0" />
         <span className="truncate">🎉 Special Offer: Get free custom photography corner with all Premium & Luxury bookings!</span>
         <span className="hidden sm:inline-block bg-white/20 px-2 py-0.5 rounded-full text-[10px] tracking-wide font-mono">CODE: POP2026</span>
@@ -158,6 +173,8 @@ export function App() {
         setActiveTab={setActiveTab}
         isDark={isDark}
         toggleTheme={toggleTheme}
+        onLoginClick={() => setIsLoginModalOpen(true)}
+        hasBookings={hasBookings}
         onQuickBook={() => {
           setActiveTab('booking');
           window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -170,6 +187,7 @@ export function App() {
           <HomePage
             categories={categories}
             popularPackages={packages.filter(p => p.popular || p.id === 'pkg-premium' || p.id === 'pkg-luxury' || p.id === 'pkg-basic')}
+            themes={themes}
             onNavigate={handleNavigate}
             onViewPackageDetails={(pkg) => setDetailModalPackage(pkg)}
             onBookPackage={handleBookPackage}
@@ -196,7 +214,7 @@ export function App() {
         {activeTab === 'how-it-works' && (
           <div className="max-w-5xl mx-auto px-4 py-12 space-y-12 animate-fadeIn">
             <div className="text-center max-w-2xl mx-auto space-y-3">
-              <span className="text-xs font-extrabold text-party-purple-600 dark:text-party-purple-400 uppercase tracking-wider bg-party-purple-100 dark:bg-party-purple-950/60 px-3.5 py-1.5 rounded-full border border-party-purple-200 dark:border-party-purple-800">
+              <span className="text-xs font-extrabold text-party-orange-600 dark:text-party-orange-400 uppercase tracking-wider bg-party-orange-100 dark:bg-party-orange-950/60 px-3.5 py-1.5 rounded-full border border-party-orange-200 dark:border-party-orange-800">
                 Step-by-Step Guide
               </span>
               <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">How BdayBuzz Works 🎈</h1>
@@ -211,13 +229,13 @@ export function App() {
                   step: '01',
                   title: 'Choose a Package',
                   desc: 'Browse through our Basic, Premium, or Luxury party packages. Each package is clearly priced with maximum guest capacities and included services.',
-                  color: 'from-party-purple-600 to-party-purple-700'
+                  color: 'from-party-orange-600 to-party-orange-700'
                 },
                 {
                   step: '02',
                   title: 'Pick a Theme',
                   desc: 'Explore our gallery of themes including Unicorn, Superhero, Princess, Dinosaur, Space, Floral, and more. Choose the visual aesthetic that matches your birthday person’s dream.',
-                  color: 'from-party-pink-500 to-party-pink-600'
+                  color: 'from-party-coral-500 to-party-coral-600'
                 },
                 {
                   step: '03',
@@ -247,7 +265,7 @@ export function App() {
             <div className="text-center pt-6">
               <button
                 onClick={() => handleNavigate('booking')}
-                className="px-8 py-4 rounded-2xl bg-gradient-to-r from-party-purple-600 via-party-pink-500 to-party-purple-700 text-white font-black text-base shadow-xl shadow-party-purple-500/30 hover:shadow-glow hover:scale-105 active:scale-95 transition-all"
+                className="px-8 py-4 rounded-2xl bg-gradient-to-r from-party-orange-600 via-party-coral-500 to-party-orange-700 text-white font-black text-base shadow-xl shadow-party-orange-500/30 hover:shadow-glow hover:scale-105 active:scale-95 transition-all"
               >
                 Start Booking Your Party Now 🎉
               </button>
@@ -265,22 +283,29 @@ export function App() {
           />
         )}
 
-        {activeTab === 'my-bookings' && (
+        {(activeTab === 'my-bookings' && isAuthenticated) && (
           <MyBookingsPage
-            bookings={bookings}
+            bookings={userBookings}
             onCancelBooking={handleCancelBooking}
             onNewBooking={() => handleNavigate('booking')}
           />
         )}
 
-
         {activeTab === 'contact' && (
           <ContactPage />
+        )}
+
+        {activeTab === 'privacy' && (
+          <PrivacyPolicyPage />
+        )}
+
+        {activeTab === 'terms' && (
+          <TermsPage />
         )}
       </main>
 
       {/* Footer */}
-      <Footer setActiveTab={handleNavigate} />
+      <Footer setActiveTab={handleNavigate} hasBookings={hasBookings} />
 
       {/* Mobile Floating Bottom Navigation Bar */}
       <div className="md:hidden fixed bottom-3 left-4 right-4 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/80 dark:border-white/10 rounded-2xl shadow-2xl p-1.5 flex items-center justify-around">
@@ -288,8 +313,8 @@ export function App() {
           onClick={() => handleNavigate('home')}
           className={`flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-xl transition-all ${
             activeTab === 'home'
-              ? 'text-party-purple-600 dark:text-party-purple-400 bg-party-purple-50 dark:bg-slate-800/80 font-bold'
-              : 'text-slate-500 dark:text-slate-400 hover:text-slate-800'
+              ? 'text-party-orange-600 dark:text-party-orange-400 bg-party-orange-50 dark:bg-slate-800/80 font-bold'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
           }`}
         >
           <Home className="w-5 h-5" />
@@ -300,8 +325,8 @@ export function App() {
           onClick={() => handleNavigate('packages')}
           className={`flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-xl transition-all ${
             activeTab === 'packages'
-              ? 'text-party-purple-600 dark:text-party-purple-400 bg-party-purple-50 dark:bg-slate-800/80 font-bold'
-              : 'text-slate-500 dark:text-slate-400 hover:text-slate-800'
+              ? 'text-party-orange-600 dark:text-party-orange-400 bg-party-orange-50 dark:bg-slate-800/80 font-bold'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
           }`}
         >
           <PkgIcon className="w-5 h-5" />
@@ -312,8 +337,8 @@ export function App() {
           onClick={() => handleNavigate('themes')}
           className={`flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-xl transition-all ${
             activeTab === 'themes'
-              ? 'text-party-purple-600 dark:text-party-purple-400 bg-party-purple-50 dark:bg-slate-800/80 font-bold'
-              : 'text-slate-500 dark:text-slate-400 hover:text-slate-800'
+              ? 'text-party-orange-600 dark:text-party-orange-400 bg-party-orange-50 dark:bg-slate-800/80 font-bold'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
           }`}
         >
           <Palette className="w-5 h-5" />
@@ -322,23 +347,25 @@ export function App() {
 
         <button
           onClick={() => handleNavigate('booking')}
-          className="flex flex-col items-center gap-0.5 py-1.5 px-3.5 rounded-xl bg-gradient-to-tr from-party-purple-600 to-party-pink-500 text-white font-bold shadow-md scale-105 active:scale-95 transition-all"
+          className="flex flex-col items-center gap-0.5 py-1.5 px-3.5 rounded-xl bg-gradient-to-tr from-party-orange-600 to-party-coral-500 text-white font-bold shadow-md scale-105 active:scale-95 transition-all"
         >
           <Calendar className="w-5 h-5" />
           <span className="text-[10px]">Book</span>
         </button>
 
-        <button
-          onClick={() => handleNavigate('my-bookings')}
-          className={`flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-xl transition-all ${
-            activeTab === 'my-bookings'
-              ? 'text-party-purple-600 dark:text-party-purple-400 bg-party-purple-50 dark:bg-slate-800/80 font-bold'
-              : 'text-slate-500 dark:text-slate-400 hover:text-slate-800'
-          }`}
-        >
-          <Ticket className="w-5 h-5" />
-          <span className="text-[10px]">Bookings</span>
-        </button>
+        {hasBookings && (
+          <button
+            onClick={() => handleNavigate('my-bookings')}
+            className={`flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-xl transition-all ${
+              activeTab === 'my-bookings'
+                ? 'text-party-orange-600 dark:text-party-orange-400 bg-party-orange-50 dark:bg-slate-800/80 font-bold'
+                : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
+            }`}
+          >
+            <Ticket className="w-5 h-5" />
+            <span className="text-[10px]">Bookings</span>
+          </button>
+        )}
       </div>
 
       {/* Package Details Modal */}
@@ -355,6 +382,11 @@ export function App() {
         onClose={() => setSubmittedBooking(null)}
         onViewBookings={() => handleNavigate('my-bookings')}
         onGoHome={() => handleNavigate('home')}
+      />
+
+      <UserLoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => setIsLoginModalOpen(false)} 
       />
 
     </div>
