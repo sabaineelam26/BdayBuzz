@@ -238,7 +238,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               key={pkg.id} 
               pkg={pkg} 
               onViewDetails={() => onViewPackageDetails(pkg)} 
-              onBook={() => onBookPackage(pkg)} 
+              onBookNow={() => onBookPackage(pkg)} 
             />
           ))}
         </div>
