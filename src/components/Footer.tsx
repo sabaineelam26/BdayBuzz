@@ -1,6 +1,7 @@
 import React from 'react';
 import { Sparkles, Phone, Mail, MapPin, Instagram, Facebook, Twitter, Heart } from 'lucide-react';
 import { useUserAuth } from '../context/UserAuthContext';
+import { Link } from 'react-router-dom';
 
 interface FooterProps {
   setActiveTab: (tab: string) => void;
@@ -160,13 +161,13 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab, hasBookings }) => 
             <p className="flex items-center gap-1 hidden sm:flex">
               Crafted with <Heart className="w-3.5 h-3.5 text-party-pink-500 fill-party-pink-500" /> for perfect celebrations
             </p>
-            <a
-              href="/admin/login"
+            <Link
+              to="/admin/login"
               className="text-stone-500 hover:text-party-purple-400 transition-colors duration-200 text-[11px] tracking-wide"
               title="Staff portal"
             >
               Staff Login
-            </a>
+            </Link>
           </div>
         </div>
       </div>
